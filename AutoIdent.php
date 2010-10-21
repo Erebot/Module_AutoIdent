@@ -36,7 +36,6 @@ extends ErebotModuleBase
             $pattern    =   $this->parseString('pattern');
             $pattern    =   '/'.str_replace('/', '\\/', $pattern).'/i';
 
-            /// @TODO use only one handler...
             $filter     =   new ErebotTextFilter(
                                 $this->_mainCfg,
                                 ErebotTextFilter::TYPE_REGEXP,
