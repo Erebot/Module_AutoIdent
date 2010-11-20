@@ -16,42 +16,42 @@
     along with Erebot.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-class   ErebotModule_AutoIdent
-extends ErebotModuleBase
+class   Erebot_Module_AutoIdent
+extends Erebot_Module_Base
 {
     protected $_password;
 
     public function reload($flags)
     {
         if ($flags & self::RELOAD_HANDLERS) {
-            $targets        = new ErebotEventTargets(ErebotEventTargets::ORDER_ALLOW_DENY);
+            $targets        = new Erebot_EventTarget(Erebot_EventTarget::ORDER_ALLOW_DENY);
             $this->_password = $this->parseString('password');
 
             $nicknames  = explode(' ', $this->parseString('nickserv', 'nickserv'));
             foreach ($nicknames as &$nickname) {
-                $targets->addRule(ErebotEventTargets::TYPE_ALLOW, $nickname);
+                $targets->addRule(Erebot_EventTarget::TYPE_ALLOW, $nickname);
             }
             unset($nickname);
 
             $pattern    =   $this->parseString('pattern');
             $pattern    =   '/'.str_replace('/', '\\/', $pattern).'/i';
 
-            $filter     =   new ErebotTextFilter(
+            $filter     =   new Erebot_TextFilter(
                                 $this->_mainCfg,
                                 ErebotTextFilter::TYPE_REGEXP,
                                 $pattern);
-            $handler    =   new ErebotEventHandler(
+            $handler    =   new Erebot_EventHandler(
                                 array($this, 'handleIdentRequest'),
                                 array(
-                                    'ErebotEventTextPrivate',
-                                    'ErebotEventNoticePrivate',
+                                    'Erebot_Event_PrivateText',
+                                    'Erebot_Event_PrivateNotice',
                                 ),
                                 $targets, $filter);
             $this->_connection->addEventHandler($handler);
         }
     }
 
-    public function handleIdentRequest(iErebotEventSource &$event)
+    public function handleIdentRequest(Erebot_Interface_Event_Source &$event)
     {
         $this->sendMessage($event->getSource(), 'IDENTIFY '.$this->_password);
     }
