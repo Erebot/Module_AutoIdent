@@ -38,7 +38,7 @@ extends Erebot_Module_Base
 
             $filter     =   new Erebot_TextFilter(
                                 $this->_mainCfg,
-                                ErebotTextFilter::TYPE_REGEXP,
+                                Erebot_TextFilter::TYPE_REGEXP,
                                 $pattern);
             $handler    =   new Erebot_EventHandler(
                                 array($this, 'handleIdentRequest'),
