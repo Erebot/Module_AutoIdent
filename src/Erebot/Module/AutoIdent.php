@@ -23,9 +23,12 @@ extends Erebot_Module_Base
 
     public function reload($flags)
     {
+        if ($flags & self::RELOAD_MEMBERS) {
+            $this->_password = $this->parseString('password');
+        }
+
         if ($flags & self::RELOAD_HANDLERS) {
             $targets        = new Erebot_EventTarget(Erebot_EventTarget::ORDER_ALLOW_DENY);
-            $this->_password = $this->parseString('password');
 
             $nicknames  = explode(' ', $this->parseString('nickserv', 'nickserv'));
             foreach ($nicknames as &$nickname) {
