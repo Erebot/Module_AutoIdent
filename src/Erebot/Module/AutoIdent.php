@@ -39,17 +39,15 @@ extends Erebot_Module_Base
             $pattern    =   $this->parseString('pattern');
             $pattern    =   '/'.str_replace('/', '\\/', $pattern).'/i';
 
-            $filter     =   new Erebot_TextFilter(
-                                $this->_mainCfg,
-                                Erebot_TextFilter::TYPE_REGEXP,
-                                $pattern);
             $handler    =   new Erebot_EventHandler(
-                                array($this, 'handleIdentRequest'),
-                                array(
-                                    'Erebot_Event_PrivateText',
-                                    'Erebot_Event_PrivateNotice',
-                                ),
-                                $targets, $filter);
+                array($this, 'handleIdentRequest'),
+                array(
+                    'Erebot_Event_PrivateText',
+                    'Erebot_Event_PrivateNotice',
+                ),
+                $targets,
+                new Erebot_TextFilter_Regex($pattern)
+            );
             $this->_connection->addEventHandler($handler);
         }
     }
