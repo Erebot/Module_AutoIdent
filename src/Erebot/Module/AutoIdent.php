@@ -28,26 +28,29 @@ extends Erebot_Module_Base
         }
 
         if ($flags & self::RELOAD_HANDLERS) {
-            $targets        = new Erebot_EventTarget(Erebot_EventTarget::ORDER_ALLOW_DENY);
-
-            $nicknames  = explode(' ', $this->parseString('nickserv', 'nickserv'));
-            foreach ($nicknames as &$nickname) {
-                $targets->addRule(Erebot_EventTarget::TYPE_ALLOW, $nickname);
-            }
-            unset($nickname);
-
             $pattern    =   $this->parseString('pattern');
             $pattern    =   '/'.str_replace('/', '\\/', $pattern).'/i';
 
+            $filter = new Erebot_Event_Match_All(
+                new Erebot_Event_Match_Any(),
+                new Erebot_Event_Match_Any(
+                    new Erebot_Event_Match_InstanceOf('Erebot_Event_PrivateText'),
+                    new Erebot_Event_Match_InstanceOf('Erebot_Event_PrivateNotice')
+                ),
+                new Erebot_Event_Match_TextRegex($pattern)
+            );
+
+            $nicknames  = explode(' ', $this->parseString('nickserv', 'nickserv'));
+            foreach ($nicknames as &$nickname) {
+                $filter[0]->addFilter(new Erebot_Event_Match_Source($nickname));
+            }
+            unset($nickname);
+
             $handler    =   new Erebot_EventHandler(
                 array($this, 'handleIdentRequest'),
-                array(
-                    'Erebot_Event_PrivateText',
-                    'Erebot_Event_PrivateNotice',
-                ),
-                $targets,
-                new Erebot_TextFilter_Regex($pattern)
+                $filter
             );
+
             $this->_connection->addEventHandler($handler);
         }
     }
