@@ -32,25 +32,41 @@ extends ErebotModuleTestCase
         $this->_networkConfig
             ->expects($this->any())
             ->method('parseString')
-            ->will($this->returnValue('password'));
+            ->will($this->onConsecutiveCalls(
+                '.*identify.*',
+                'nickserv',
+                'password'
+            ));
 
         $this->_module = new Erebot_Module_AutoIdent(
             $this->_connection,
             NULL
         );
         $this->_module->reload(Erebot_Module_Base::RELOAD_ALL);
+
         $event = new Erebot_Event_PrivateText(
             $this->_connection,
-            'NickServ',
+            'NickServ', // We also test case-insensitive comparison.
             'foo'   // Does not matter : the module expects bad input
                     // to have already been filtered out by then.
         );
         $this->_module->handleIdentRequest($event);
         $this->assertSame(1, count($this->_outputBuffer));
+        $output = array_shift($this->_outputBuffer);
         $this->assertSame(
             "PRIVMSG NickServ :IDENTIFY password",
-            $this->_outputBuffer[0]
+            $output
         );
+
+        // The second request comes from an untrusted nick.
+        // Verify that we do not send out the password.
+        $event = new Erebot_Event_PrivateText(
+            $this->_connection,
+            'NickServFake',
+            'foo'   // Does not matter.
+        );
+        $this->_module->handleIdentRequest($event);
+        $this->assertSame(0, count($this->_outputBuffer));
     }
 }
 

@@ -19,36 +19,21 @@
 class   Erebot_Module_AutoIdent
 extends Erebot_Module_Base
 {
-    protected $_password;
-
     public function reload($flags)
     {
-        if ($flags & self::RELOAD_MEMBERS) {
-            $this->_password = $this->parseString('password');
-        }
-
         if ($flags & self::RELOAD_HANDLERS) {
             $pattern    =   $this->parseString('pattern');
             $pattern    =   '/'.str_replace('/', '\\/', $pattern).'/i';
 
-            $filter = new Erebot_Event_Match_All(
-                new Erebot_Event_Match_Any(),
-                new Erebot_Event_Match_Any(
-                    new Erebot_Event_Match_InstanceOf('Erebot_Event_PrivateText'),
-                    new Erebot_Event_Match_InstanceOf('Erebot_Event_PrivateNotice')
-                ),
-                new Erebot_Event_Match_TextRegex($pattern)
-            );
-
-            $nicknames  = explode(' ', $this->parseString('nickserv', 'nickserv'));
-            foreach ($nicknames as &$nickname) {
-                $filter[0]->addFilter(new Erebot_Event_Match_Source($nickname));
-            }
-            unset($nickname);
-
             $handler    =   new Erebot_EventHandler(
                 array($this, 'handleIdentRequest'),
-                $filter
+                new Erebot_Event_Match_All(
+                    new Erebot_Event_Match_Any(
+                        new Erebot_Event_Match_InstanceOf('Erebot_Event_PrivateText'),
+                        new Erebot_Event_Match_InstanceOf('Erebot_Event_PrivateNotice')
+                    ),
+                    new Erebot_Event_Match_TextRegex($pattern)
+                )
             );
 
             $this->_connection->addEventHandler($handler);
@@ -57,7 +42,21 @@ extends Erebot_Module_Base
 
     public function handleIdentRequest(Erebot_Interface_Event_Source &$event)
     {
-        $this->sendMessage($event->getSource(), 'IDENTIFY '.$this->_password);
+        $nicknames  = explode(' ', $this->parseString('nickserv', 'nickserv'));
+        $found      = FALSE;
+        foreach ($nicknames as &$nickname) {
+            if (!$this->_connection->irccasecmp(
+                $nickname, $event->getSource())) {
+                $found = TRUE;
+                break;
+            }
+        }
+        unset($nickname);
+
+        if (!$found) return;
+
+        $password = $this->parseString('password');
+        $this->sendMessage($event->getSource(), 'IDENTIFY '.$password);
     }
 }
 
