@@ -29,7 +29,7 @@ extends ErebotModuleTestCase
     {
         // Make it look as though the channel
         // uses "password" as its key.
-        $this->_networkConfig
+        $this->_serverConfig
             ->expects($this->any())
             ->method('parseString')
             ->will($this->onConsecutiveCalls(
