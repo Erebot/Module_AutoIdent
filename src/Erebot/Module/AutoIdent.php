@@ -19,7 +19,7 @@
 class   Erebot_Module_AutoIdent
 extends Erebot_Module_Base
 {
-    public function reload($flags)
+    public function _reload($flags)
     {
         if ($flags & self::RELOAD_HANDLERS) {
             $pattern    =   $this->parseString('pattern');
@@ -38,6 +38,10 @@ extends Erebot_Module_Base
 
             $this->_connection->addEventHandler($handler);
         }
+    }
+
+    protected function _unload()
+    {
     }
 
     public function handleIdentRequest(Erebot_Interface_Event_Source &$event)
