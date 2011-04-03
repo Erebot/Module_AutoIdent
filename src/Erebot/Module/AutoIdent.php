@@ -29,8 +29,8 @@ extends Erebot_Module_Base
                 array($this, 'handleIdentRequest'),
                 new Erebot_Event_Match_All(
                     new Erebot_Event_Match_Any(
-                        new Erebot_Event_Match_InstanceOf('Erebot_Event_PrivateText'),
-                        new Erebot_Event_Match_InstanceOf('Erebot_Event_PrivateNotice')
+                        new Erebot_Event_Match_InstanceOf('Erebot_Interface_Event_PrivateText'),
+                        new Erebot_Event_Match_InstanceOf('Erebot_Interface_Event_PrivateNotice')
                     ),
                     new Erebot_Event_Match_TextRegex($pattern)
                 )
@@ -44,7 +44,7 @@ extends Erebot_Module_Base
     {
     }
 
-    public function handleIdentRequest(Erebot_Interface_Event_Source &$event)
+    public function handleIdentRequest(Erebot_Interface_Event_Base_Source $event)
     {
         $nicknames  = explode(' ', $this->parseString('nickserv', 'nickserv'));
         $found      = FALSE;
