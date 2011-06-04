@@ -67,6 +67,7 @@ extends ErebotModuleTestCase
         );
         $this->_module->handleIdentRequest($event);
         $this->assertSame(0, count($this->_outputBuffer));
+        $this->_module->unload();
     }
 }
 
