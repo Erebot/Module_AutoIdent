@@ -16,9 +16,15 @@
     along with Erebot.  If not, see <http://www.gnu.org/licenses/>.
 */
 
+/**
+ * \brief
+ *      A module which automatically identifies
+ *      the bot to a nick server (usually "NickServ").
+ */
 class   Erebot_Module_AutoIdent
 extends Erebot_Module_Base
 {
+    /// \copydoc Erebot_Module_Base::_reload()
     public function _reload($flags)
     {
         if ($flags & self::RELOAD_HANDLERS) {
@@ -40,24 +46,34 @@ extends Erebot_Module_Base
         }
     }
 
+    /// \copydoc Erebot_Module_Base::_unload()
     protected function _unload()
     {
     }
 
+    /**
+     * Handles a request from the nick server for the bot
+     * to identify itself.
+     *
+     * \param Erebot_Interface_Event_Base_Source $event
+     *      The identification request.
+     *
+     * \return
+     *      This method does not return anything.
+     */
     public function handleIdentRequest(Erebot_Interface_Event_Base_Source $event)
     {
         $nicknames  = explode(' ', $this->parseString('nickserv', 'nickserv'));
         $found      = FALSE;
-        foreach ($nicknames as &$nickname) {
+        foreach ($nicknames as $nickname) {
             if (!$this->_connection->irccasecmp(
                 $nickname, $event->getSource())) {
                 $found = TRUE;
                 break;
             }
         }
-        unset($nickname);
-
-        if (!$found) return;
+        if (!$found)
+            return;
 
         $password = $this->parseString('password');
         $this->sendMessage($event->getSource(), 'IDENTIFY '.$password);
