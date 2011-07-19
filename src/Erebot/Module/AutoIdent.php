@@ -32,11 +32,15 @@ extends Erebot_Module_Base
             $pattern    =   '/'.str_replace('/', '\\/', $pattern).'/i';
 
             $handler    =   new Erebot_EventHandler(
-                array($this, 'handleIdentRequest'),
+                new Erebot_Callable(array($this, 'handleIdentRequest')),
                 new Erebot_Event_Match_All(
                     new Erebot_Event_Match_Any(
-                        new Erebot_Event_Match_InstanceOf('Erebot_Interface_Event_Base_PrivateText'),
-                        new Erebot_Event_Match_InstanceOf('Erebot_Interface_Event_Base_PrivateNotice')
+                        new Erebot_Event_Match_InstanceOf(
+                            'Erebot_Interface_Event_Base_PrivateText'
+                        ),
+                        new Erebot_Event_Match_InstanceOf(
+                            'Erebot_Interface_Event_Base_PrivateNotice'
+                        )
                     ),
                     new Erebot_Event_Match_TextRegex($pattern)
                 )
