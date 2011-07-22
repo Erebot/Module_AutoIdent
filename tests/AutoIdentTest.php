@@ -50,7 +50,7 @@ extends ErebotModuleTestCase
             'foo'   // Does not matter : the module expects bad input
                     // to have already been filtered out by then.
         );
-        $this->_module->handleIdentRequest($event);
+        $this->_module->handleIdentRequest($this->_eventHandler, $event);
         $this->assertSame(1, count($this->_outputBuffer));
         $output = array_shift($this->_outputBuffer);
         $this->assertSame(
@@ -65,7 +65,7 @@ extends ErebotModuleTestCase
             'NickServFake',
             'foo'   // Does not matter.
         );
-        $this->_module->handleIdentRequest($event);
+        $this->_module->handleIdentRequest($this->_eventHandler, $event);
         $this->assertSame(0, count($this->_outputBuffer));
         $this->_module->unload();
     }
