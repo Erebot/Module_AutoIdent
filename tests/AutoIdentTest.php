@@ -16,11 +16,12 @@
     along with Erebot.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-require_once(
-    dirname(__FILE__) .
-    DIRECTORY_SEPARATOR . 'testenv' .
-    DIRECTORY_SEPARATOR . 'bootstrap.php'
-);
+if (!defined('TESTENV_DIR'))
+    define(
+        'TESTENV_DIR',
+        dirname(__FILE__) . DIRECTORY_SEPARATOR . 'testenv'
+    );
+require_once(TESTENV_DIR . DIRECTORY_SEPARATOR . 'bootstrap.php');
 
 class   AutoIdentTest
 extends ErebotModuleTestCase
@@ -33,7 +34,6 @@ extends ErebotModuleTestCase
             ->expects($this->any())
             ->method('parseString')
             ->will($this->onConsecutiveCalls(
-                '.*identify.*',
                 'nickserv',
                 'password'
             ));
@@ -41,15 +41,28 @@ extends ErebotModuleTestCase
         $this->_module = new Erebot_Module_AutoIdent(NULL);
         $this->_module->reload(
             $this->_connection,
-            Erebot_Module_Base::RELOAD_ALL
+            0
         );
 
-        $event = new Erebot_Event_PrivateText(
-            $this->_connection,
-            'NickServ', // We also test case-insensitive comparison.
-            'foo'   // Does not matter : the module expects bad input
-                    // to have already been filtered out by then.
+        $event = $this->getMock(
+            'Erebot_Interface_Event_PrivateText',
+            array(), array(), '', FALSE, FALSE
         );
+        $event
+            ->expects($this->any())
+            ->method('getConnection')
+            ->will($this->returnValue($this->_connection));
+        $event
+            ->expects($this->any())
+            ->method('getText')
+            ->will($this->returnValue('foo'));
+        // The first time this event is used, an identification request
+        // is sent to NickServ. The second time, no such request is sent.
+        $event
+            ->expects($this->any())
+            ->method('getSource')
+            ->will($this->onConsecutiveCalls('NickServ', 'NickServFake'));
+
         $this->_module->handleIdentRequest($this->_eventHandler, $event);
         $this->assertSame(1, count($this->_outputBuffer));
         $output = array_shift($this->_outputBuffer);
@@ -60,11 +73,6 @@ extends ErebotModuleTestCase
 
         // The second request comes from an untrusted nick.
         // Verify that we do not send out the password.
-        $event = new Erebot_Event_PrivateText(
-            $this->_connection,
-            'NickServFake',
-            'foo'   // Does not matter.
-        );
         $this->_module->handleIdentRequest($this->_eventHandler, $event);
         $this->assertSame(0, count($this->_outputBuffer));
         $this->_module->unload();

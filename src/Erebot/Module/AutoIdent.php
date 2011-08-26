@@ -71,10 +71,10 @@ extends Erebot_Module_Base
     )
     {
         $nicknames  = explode(' ', $this->parseString('nickserv', 'nickserv'));
+        $source     = $event->getSource();
         $found      = FALSE;
         foreach ($nicknames as $nickname) {
-            if (!$this->_connection->irccasecmp(
-                $nickname, $event->getSource())) {
+            if (!$this->_connection->irccasecmp($nickname, $source)) {
                 $found = TRUE;
                 break;
             }
@@ -83,7 +83,7 @@ extends Erebot_Module_Base
             return;
 
         $password = $this->parseString('password');
-        $this->sendMessage($event->getSource(), 'IDENTIFY '.$password);
+        $this->sendMessage($source, 'IDENTIFY '.$password);
     }
 }
 
