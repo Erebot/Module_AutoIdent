@@ -59,6 +59,8 @@ extends Erebot_Module_Base
      * Handles a request from the nick server for the bot
      * to identify itself.
      *
+     * @SuppressWarnings(PHPMD.UnusedFormalParameter)
+     *
      * \param Erebot_Interface_Event_Base_Source $event
      *      The identification request.
      *
