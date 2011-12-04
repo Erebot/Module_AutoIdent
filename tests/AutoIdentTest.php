@@ -17,7 +17,7 @@
 */
 
 class   AutoIdentTest
-extends ErebotModuleTestCase
+extends Erebot_Testenv_Module_TestCase
 {
     public function testAutoIdent()
     {
