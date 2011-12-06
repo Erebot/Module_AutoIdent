@@ -24,7 +24,18 @@
 class   Erebot_Module_AutoIdent
 extends Erebot_Module_Base
 {
-    /// \copydoc Erebot_Module_Base::_reload()
+    /**
+     * This method is called whenever the module is (re)loaded.
+     *
+     * \param int $flags
+     *      A bitwise OR of the Erebot_Module_Base::RELOAD_*
+     *      constants. Your method should take proper actions
+     *      depending on the value of those flags.
+     *
+     * \note
+     *      See the documentation on individual RELOAD_*
+     *      constants for a list of possible values.
+     */
     public function _reload($flags)
     {
         if ($flags & self::RELOAD_HANDLERS) {
@@ -59,13 +70,16 @@ extends Erebot_Module_Base
      * Handles a request from the nick server for the bot
      * to identify itself.
      *
-     * @SuppressWarnings(PHPMD.UnusedFormalParameter)
+     * \param Erebot_Interface_EventHandler $handler
+     *      Handler that triggered this event.
      *
      * \param Erebot_Interface_Event_Base_Source $event
      *      The identification request.
      *
      * \return
      *      This method does not return anything.
+     *
+     * @SuppressWarnings(PHPMD.UnusedFormalParameter)
      */
     public function handleIdentRequest(
         Erebot_Interface_EventHandler       $handler,
