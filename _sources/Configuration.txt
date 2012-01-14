@@ -1,12 +1,12 @@
 Configuration
 =============
 
-Configuration options
----------------------
+Options
+-------
 
-This module provides the following configuration options:
+This module provides several configuration options.
 
-..  table:: Configuration options for |project|
+..  table:: Options for |project|
 
     +----------+--------+---------------+-------------------------------------+
     | Name     | Type   | Default value | Description                         |
@@ -24,11 +24,12 @@ This module provides the following configuration options:
     |          |        |               | the wire.                           |
     +----------+--------+---------------+-------------------------------------+
 
-Configuration example
----------------------
 
-The following configuration has successfully been used on the
-`EpiKnet IRC network`_ which uses "Themis" as NickServ's main nickname.
+Example
+-------
+
+The following configuration has been used successfully on the
+`EpiKnet IRC network`_ which uses ``Themis`` as NickServ's main nickname.
 
 ..  parsed-code:: xml
 
