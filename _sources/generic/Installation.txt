@@ -88,10 +88,8 @@ First, select the version you want to install. Available versions are listed
 on `Erebot's PEAR channel`_.
 
 The PHAR archive for a certain version can be downloaded by using a URL
-such as |project_version|.
-
-For example, to download version |version| of |project|, the following URL
-could be used: |project_release|.
+such as |project_version| (replace `version` with the actual version you
+selected).
 
 As a special shortcut, the following link always points to the latest snapshot
 of |project|: |project_latest|.
