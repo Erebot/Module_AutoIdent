@@ -33,7 +33,7 @@ The following configuration has been used successfully on the
 
 ..  parsed-code:: xml
 
-    <?xml version="1.0" ?>
+    <?xml version="1.0"?>
     <configuration
       xmlns="http://localhost/Erebot/"
       version="..."
@@ -82,7 +82,6 @@ The following configuration has been used successfully on the
         </network>
       </networks>
     </configuration>
-    </code></pre>
 
 ..  _`EpiKnet IRC network`:
     http://epiknet.org/
