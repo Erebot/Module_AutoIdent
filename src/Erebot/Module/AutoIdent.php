@@ -89,8 +89,9 @@ extends Erebot_Module_Base
         $nicknames  = explode(' ', $this->parseString('nickserv', 'nickserv'));
         $source     = $event->getSource();
         $found      = FALSE;
+        $collator   = $this->_connection->getCollator();
         foreach ($nicknames as $nickname) {
-            if (!$this->_connection->irccasecmp($nickname, $source)) {
+            if (!$collator->compare($nickname, $source)) {
                 $found = TRUE;
                 break;
             }
