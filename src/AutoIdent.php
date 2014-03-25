@@ -117,8 +117,7 @@ class AutoIdent extends \Erebot\Module\Base implements \Erebot\Interfaces\HelpEn
     public function handleIdentRequest(
         \Erebot\Interfaces\EventHandler $handler,
         \Erebot\Interfaces\Event\Base\Source $event
-    )
-    {
+    ) {
         $nicknames  = explode(' ', $this->parseString('nickserv', 'nickserv'));
         $source     = $event->getSource();
         $found      = false;
