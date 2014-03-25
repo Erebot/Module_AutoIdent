@@ -32,7 +32,7 @@ extends Erebot_Testenv_Module_TestCase
             ));
 
         $this->_module = new \Erebot\Module\AutoIdent(null);
-        $this->_module->moduleReload(
+        $this->_module->reloadModule(
             $this->_connection,
             0
         );
@@ -68,7 +68,6 @@ extends Erebot_Testenv_Module_TestCase
         // Verify that we do not send out the password.
         $this->_module->handleIdentRequest($this->_eventHandler, $event);
         $this->assertSame(0, count($this->_outputBuffer));
-        $this->_module->moduleUnload();
+        $this->_module->unloadModule();
     }
 }
-
