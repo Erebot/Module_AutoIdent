@@ -16,13 +16,14 @@
     along with Erebot.  If not, see <http://www.gnu.org/licenses/>.
 */
 
+namespace Erebot\Module;
+
 /**
  * \brief
  *      A module which automatically identifies
  *      the bot to a nick server (usually "NickServ").
  */
-class   Erebot_Module_AutoIdent
-extends Erebot_Module_Base
+class AutoIdent extends \Erebot\Module\Base implements \Erebot\Interfaces\HelpEnabled
 {
     /**
      * This method is called whenever the module is (re)loaded.
@@ -36,62 +37,52 @@ extends Erebot_Module_Base
      *      See the documentation on individual RELOAD_*
      *      constants for a list of possible values.
      */
-    public function _reload($flags)
+    public function reload($flags)
     {
         if ($flags & self::RELOAD_HANDLERS) {
-            $pattern    =   $this->parseString('pattern');
-            $pattern    =   '/'.str_replace('/', '\\/', $pattern).'/i';
+            $pattern    = $this->parseString('pattern');
+            $pattern    = '/'.str_replace('/', '\\/', $pattern).'/i';
 
-            $handler    =   new Erebot_EventHandler(
-                new Erebot_Callable(array($this, 'handleIdentRequest')),
-                new Erebot_Event_Match_All(
-                    new Erebot_Event_Match_Any(
-                        new Erebot_Event_Match_InstanceOf(
-                            'Erebot_Interface_Event_Base_PrivateText'
-                        ),
-                        new Erebot_Event_Match_InstanceOf(
-                            'Erebot_Interface_Event_Base_PrivateNotice'
-                        )
+            $handler    = new \Erebot\EventHandler(
+                new \Erebot\CallableWrapper(array($this, 'handleIdentRequest')),
+                new \Erebot\Event\Match\All(
+                    new \Erebot\Event\Match\Type(
+                        '\\Erebot\\Interfaces\\Event\\Base\\PrivateText',
+                        '\\Erebot\\Interfaces\\Event\\Base\\PrivateNotice'
                     ),
-                    new Erebot_Event_Match_TextRegex($pattern)
+                    new \Erebot\Event\Match\TextRegex($pattern)
                 )
             );
 
-            $this->_connection->addEventHandler($handler);
+            $this->connection->addEventHandler($handler);
 
             $cls = $this->getFactory('!Callable');
             $this->registerHelpMethod(new $cls(array($this, 'getHelp')));
         }
     }
 
-    /// \copydoc Erebot_Module_Base::_unload()
-    protected function _unload()
-    {
-    }
-
     /**
      * Provides help about this module.
      *
-     * \param Erebot_Interface_Event_Base_TextMessage $event
+     * \param Erebot::Interfaces::Event::Base::TextMessage $event
      *      Some help request.
      *
-     * \param Erebot_Interface_TextWrapper $words
+     * \param Erebot::Interfaces::TextWrapper $words
      *      Parameters passed with the request. This is the same
      *      as this module's name when help is requested on the
      *      module itself (in opposition with help on a specific
      *      command provided by the module).
      */
     public function getHelp(
-        Erebot_Interface_Event_Base_TextMessage $event,
-        Erebot_Interface_TextWrapper            $words
-    )
-    {
-        if ($event instanceof Erebot_Interface_Event_Base_Private) {
+        \Erebot\Interfaces\Event\Base\TextMessage $event,
+        \Erebot\Interfaces\TextWrapper $words
+    ) {
+        if ($event instanceof \Erebot\Interfaces\Event\Base\PrivateMessage) {
             $target = $event->getSource();
-            $chan   = NULL;
-        }
-        else
+            $chan   = null;
+        } else {
             $target = $chan = $event->getChan();
+        }
 
         $fmt        = $this->getFormatter($chan);
         $moduleName = strtolower(get_class());
@@ -104,7 +95,7 @@ extends Erebot_Module_Base
                 "automatically."
             );
             $this->sendMessage($target, $msg);
-            return TRUE;
+            return true;
         }
     }
 
@@ -112,10 +103,10 @@ extends Erebot_Module_Base
      * Handles a request from the nick server for the bot
      * to identify itself.
      *
-     * \param Erebot_Interface_EventHandler $handler
+     * \param Erebot::Interfaces::EventHandler $handler
      *      Handler that triggered this event.
      *
-     * \param Erebot_Interface_Event_Base_Source $event
+     * \param Erebot::Interfaces::Event::Base::Source $event
      *      The identification request.
      *
      * \return
@@ -124,25 +115,25 @@ extends Erebot_Module_Base
      * @SuppressWarnings(PHPMD.UnusedFormalParameter)
      */
     public function handleIdentRequest(
-        Erebot_Interface_EventHandler       $handler,
-        Erebot_Interface_Event_Base_Source  $event
+        \Erebot\Interfaces\EventHandler $handler,
+        \Erebot\Interfaces\Event\Base\Source $event
     )
     {
         $nicknames  = explode(' ', $this->parseString('nickserv', 'nickserv'));
         $source     = $event->getSource();
-        $found      = FALSE;
-        $collator   = $this->_connection->getCollator();
+        $found      = false;
+        $collator   = $this->connection->getCollator();
         foreach ($nicknames as $nickname) {
             if (!$collator->compare($nickname, $source)) {
-                $found = TRUE;
+                $found = true;
                 break;
             }
         }
-        if (!$found)
+        if (!$found) {
             return;
+        }
 
         $password = $this->parseString('password');
         $this->sendMessage($source, 'IDENTIFY '.$password);
     }
 }
-

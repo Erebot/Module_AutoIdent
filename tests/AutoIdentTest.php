@@ -31,14 +31,14 @@ extends Erebot_Testenv_Module_TestCase
                 'password'
             ));
 
-        $this->_module = new Erebot_Module_AutoIdent(NULL);
-        $this->_module->reload(
+        $this->_module = new \Erebot\Module\AutoIdent(null);
+        $this->_module->moduleReload(
             $this->_connection,
             0
         );
 
         $event = $this->getMock(
-            'Erebot_Interface_Event_PrivateText',
+            '\\Erebot\\Interfaces\\Event\\PrivateText',
             array(), array(), '', FALSE, FALSE
         );
         $event
@@ -68,7 +68,7 @@ extends Erebot_Testenv_Module_TestCase
         // Verify that we do not send out the password.
         $this->_module->handleIdentRequest($this->_eventHandler, $event);
         $this->assertSame(0, count($this->_outputBuffer));
-        $this->_module->unload();
+        $this->_module->moduleUnload();
     }
 }
 
