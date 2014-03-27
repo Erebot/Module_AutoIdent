@@ -642,12 +642,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/Erebot/Erebot_Testenv.git",
-                "reference": "275a3ee99252e93ea50909c757bd51056cf67ae9"
+                "reference": "f5f2371a3f6ad55cc185698d4aadab8f2323041e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Erebot/Erebot_Testenv/zipball/275a3ee99252e93ea50909c757bd51056cf67ae9",
-                "reference": "275a3ee99252e93ea50909c757bd51056cf67ae9",
+                "url": "https://api.github.com/repos/Erebot/Erebot_Testenv/zipball/f5f2371a3f6ad55cc185698d4aadab8f2323041e",
+                "reference": "f5f2371a3f6ad55cc185698d4aadab8f2323041e",
                 "shasum": ""
             },
             "require": {
@@ -683,7 +683,7 @@
             "keywords": [
                 "Erebot"
             ],
-            "time": "2014-03-27 18:29:21"
+            "time": "2014-03-27 20:08:17"
         },
         {
             "name": "pdepend/pdepend",
