@@ -44,7 +44,7 @@ class AutoIdent extends \Erebot\Module\Base implements \Erebot\Interfaces\HelpEn
             $pattern    = '/'.str_replace('/', '\\/', $pattern).'/i';
 
             $handler    = new \Erebot\EventHandler(
-                new \Erebot\CallableWrapper(array($this, 'handleIdentRequest')),
+                \Erebot\CallableWrapper::wrap(array($this, 'handleIdentRequest')),
                 new \Erebot\Event\Match\All(
                     new \Erebot\Event\Match\Type(
                         '\\Erebot\\Interfaces\\Event\\Base\\PrivateText',
@@ -55,9 +55,6 @@ class AutoIdent extends \Erebot\Module\Base implements \Erebot\Interfaces\HelpEn
             );
 
             $this->connection->addEventHandler($handler);
-
-            $cls = $this->getFactory('!Callable');
-            $this->registerHelpMethod(new $cls(array($this, 'getHelp')));
         }
     }
 
