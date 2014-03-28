@@ -31,8 +31,6 @@ extends Erebot_Testenv_Module_TestCase
                 'password'
             ));
 
-        \Erebot\CallableWrapper::initialize();
-        class_exists('\\Erebot\\Module\\callable');
         $this->_module = new \Erebot\Module\AutoIdent(null);
         $this->_module->reloadModule(
             $this->_connection,
