@@ -45,7 +45,7 @@ The following configuration has been used successfully on the
         <!-- Other modules ignored for clarity. -->
 
         <!-- Configure the bot's nickname, etc. -->
-        <module name="Erebot_Module_IrcConnector">
+        <module name="|project|">
           <param name="nickname" value="Erebot" />
           <param name="identity" value="Erebot" />
           <param name="hostname" value="Erebot" />
@@ -59,18 +59,20 @@ The following configuration has been used successfully on the
              <module name="|project|">
                <!--
                  "NickServ" is called "Themis" on EpiKnet.
-                 We also allow "NickServ", just in case.
+                 Both names are whitelisted here.
                -->
                <param name="nickserv" value="Themis NickServ" />
-               <param name="password" value="********" />
+               <param name="password" value="my-secret-password" />
 
                <!--
-                 The pattern is translated in French here because the bot's
-                 nickname was configured to use French as its language
-                 (and in fact, it's the default language on EpiKnet).
-                 You may need to adapt it to your own mileage.
+                 EpiKnet's nickname service is configured to use french
+                 by default to communicate.
+                 Therefore, The pattern needed to match the warning about
+                 registered nicknames has been translated to french.
+
                  Of course, a pattern like ".*(enregistré|registered).*"
-                 would also be fine.
+                 would also work and would match both the french
+                 and english variants of the message.
                -->
                <param name="pattern"  value=".*enregistré.*" />
              </module>
