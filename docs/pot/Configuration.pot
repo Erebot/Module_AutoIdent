@@ -1,0 +1,97 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 2011-2016, Erebot
+# This file is distributed under the same license as the Erebot_Module_AutoIdent package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: Erebot_Module_AutoIdent 1.0.x-dev\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2016-12-29 15:51+0100\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: ../src/Configuration.rst:10
+msgid "Configuration"
+msgstr ""
+
+#: ../src/Configuration.rst:13
+msgid "Options"
+msgstr ""
+
+#: ../src/Configuration.rst:15
+msgid "This module provides several configuration options."
+msgstr ""
+
+#: ../src/Configuration.rst:0
+msgid "Options for |project|"
+msgstr ""
+
+#: ../src/Configuration.rst:20
+msgid "Name"
+msgstr ""
+
+#: ../src/Configuration.rst:20
+msgid "Type"
+msgstr ""
+
+#: ../src/Configuration.rst:20
+msgid "Default value"
+msgstr ""
+
+#: ../src/Configuration.rst:20
+msgid "Description"
+msgstr ""
+
+#: ../src/Configuration.rst:22
+msgid "nickserv"
+msgstr ""
+
+#: ../src/Configuration.rst:22
+#: ../src/Configuration.rst:26
+#: ../src/Configuration.rst:29
+msgid "string"
+msgstr ""
+
+#: ../src/Configuration.rst:22
+msgid "\"nickserv\""
+msgstr ""
+
+#: ../src/Configuration.rst:22
+msgid "A space-separated list of nicknames NickServ may use to contact us. Usually \"nickserv\"."
+msgstr ""
+
+#: ../src/Configuration.rst:26
+msgid "password"
+msgstr ""
+
+#: ../src/Configuration.rst:26
+#: ../src/Configuration.rst:29
+msgid "n/a"
+msgstr ""
+
+#: ../src/Configuration.rst:26
+msgid "The password associated with the bot's nickname"
+msgstr ""
+
+#: ../src/Configuration.rst:29
+msgid "pattern"
+msgstr ""
+
+#: ../src/Configuration.rst:29
+msgid "The pattern (regular expression) an incoming message must match before the bot sends out the password on the wire."
+msgstr ""
+
+#: ../src/Configuration.rst:37
+msgid "Example"
+msgstr ""
+
+#: ../src/Configuration.rst:39
+msgid "The following configuration has been used successfully on the `EpiKnet IRC network`_ which uses ``Themis`` as NickServ's main nickname."
+msgstr ""
+
